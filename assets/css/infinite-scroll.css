@@ -1,0 +1,55 @@
+.wp-pfis-controls {
+	clear: both;
+	margin-block: 1.5rem;
+	text-align: center;
+}
+
+.wp-pfis-load-more {
+	display: inline-block;
+	min-block-size: 44px;
+	padding: 0.65rem 1rem;
+	border: 1px solid currentColor;
+	border-radius: 0.25rem;
+	line-height: 1.5;
+	text-decoration: none;
+}
+
+.wp-pfis-load-more.is-loading {
+	cursor: wait;
+	opacity: 0.7;
+}
+
+.wp-pfis-status {
+	min-block-size: 1.5em;
+	margin: 0.5rem 0 0;
+	font-size: 0.875em;
+}
+
+.wp-pfis-sentinel {
+	inline-size: 100%;
+	block-size: 1px;
+}
+
+.wp-pfis-pagination-fallback {
+	font-size: 0.875em;
+	opacity: 0.75;
+}
+
+.wp-pfis-pagination-fallback:focus-within,
+.wp-pfis-pagination-fallback:hover,
+.wp-pfis-pagination-fallback.is-prominent {
+	opacity: 1;
+}
+
+.wp-pfis-page-boundary[hidden] {
+	display: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.wp-pfis-controls *,
+	.wp-pfis-pagination-fallback {
+		scroll-behavior: auto !important;
+		transition: none !important;
+	}
+}
+
