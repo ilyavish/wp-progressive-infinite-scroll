@@ -3,7 +3,7 @@
  * Plugin Name:       WP Progressive Infinite Scroll
  * Plugin URI:        https://github.com/ilyavish/wp-progressive-infinite-scroll
  * Description:       Adds theme-aware infinite scrolling while preserving normal WordPress pagination as the foundation and fallback.
- * Version:           1.0.0
+ * Version:           1.0.1
  * Requires at least: 6.0
  * Requires PHP:      7.4
  * Author:            holdmyvodka.com
@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-const VERSION = '1.0.0';
+const VERSION = '1.0.1';
 const OPTION  = 'wp_pfis_selectors';
 
 require_once __DIR__ . '/includes/class-settings.php';
@@ -51,6 +51,13 @@ function enqueue_assets(): void {
 	$template = strtolower( (string) $theme->get_template() );
 	$style    = strtolower( (string) $theme->get_stylesheet() );
 	$settings = Settings::get_selectors();
+	$theme_id = 'generic';
+
+	if ( 'p2' === $template || 'p2' === $style ) {
+		$theme_id = 'p2';
+	} elseif ( 'p2-resurrected' === $template || 'p2-resurrected' === $style ) {
+		$theme_id = 'p2-resurrected';
+	}
 
 	wp_enqueue_style(
 		'wp-pfis',
@@ -76,7 +83,7 @@ function enqueue_assets(): void {
 	);
 
 	$config = array(
-		'theme'      => ( 'p2' === $template || 'p2' === $style ) ? 'p2' : 'generic',
+		'theme'      => $theme_id,
 		'selectors'  => $settings,
 		'rootMargin' => '800px 0px',
 		'timeout'    => 20000,
@@ -118,4 +125,3 @@ function bootstrap(): void {
 	}
 }
 add_action( 'plugins_loaded', __NAMESPACE__ . '\\bootstrap' );
-

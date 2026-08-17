@@ -54,6 +54,10 @@
 		return result('p2', one(document, '#postlist'), ':scope > li.post', one(document, '#main .navigation'), '.nav-older a');
 	}
 
+	function p2Resurrected(document) {
+		return result('p2-resurrected', one(document, '#postlist'), ':scope > li.post', one(document, '#main .navigation'), 'a.next.page-numbers');
+	}
+
 	function block(document) {
 		var containers = document.querySelectorAll('.wp-block-query .wp-block-post-template');
 		if (containers.length !== 1) return null;
@@ -113,6 +117,9 @@
 		if (config.theme === 'p2') {
 			return p2(document);
 		}
+		if (config.theme === 'p2-resurrected') {
+			return p2Resurrected(document);
+		}
 		return block(document) || generic(document);
 	}
 
@@ -120,6 +127,7 @@
 		detect: detect,
 		manual: manual,
 		p2: p2,
+		p2Resurrected: p2Resurrected,
 		block: block,
 		generic: generic,
 		scopedPosts: scopedPosts

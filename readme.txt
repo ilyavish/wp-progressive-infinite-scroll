@@ -4,7 +4,7 @@ Tags: infinite scroll, pagination, progressive enhancement, p2, accessibility
 Requires at least: 6.0
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 1.0.0
+Stable tag: 1.0.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -17,6 +17,7 @@ WP Progressive Infinite Scroll fetches the active theme's existing paginated arc
 Built-in adapters cover:
 
 * P2 (`#postlist`, direct `li.post`, `.navigation`, `.nav-older a`)
+* P2 Resurrected (`#postlist`, direct `li.post`, numbered pagination, `a.next.page-numbers`)
 * Block Query loops
 * Unambiguous common classic-theme markup
 * Complete manual selector overrides under Settings > Infinite Scroll
@@ -50,8 +51,12 @@ Ambiguous detection fails safely. Configure precise selectors in Settings > Infi
 
 == Changelog ==
 
+= 1.0.1 =
+
+* Add automatic P2 Resurrected detection and its numbered older-post pagination markup.
+* Apply the controlled P2 post/comment reinitialization to P2 Resurrected appends.
+
 = 1.0.0 =
 
 * Initial release with P2, block-theme, classic-theme, and manual adapters.
 * Add automatic and manual loading, request safeguards, duplicate prevention, conservative history updates, accessible status messages, and failure fallback.
-

@@ -21,6 +21,22 @@ test('detects the official P2 structure and older-post URL', () => {
 	assert.equal(result.nextPageUrl, 'https://holdmyvodka.com/page/2/');
 });
 
+test('detects the P2 Resurrected structure and numbered next-page URL', () => {
+	const document = documentFor(`
+		<div id="main"><ul id="postlist">
+			<li id="prologue-84" class="post hentry"><a class="thepermalink" href="/post/84/">Post</a></li>
+		</ul><nav class="navigation pagination" aria-label="Posts pagination"><div class="nav-links">
+			<span class="page-numbers current">1</span>
+			<a class="page-numbers" href="/page/2/">2</a>
+			<a class="next page-numbers" href="/page/2/">Older Posts →</a>
+		</div></nav></div>
+	`);
+	const result = adapters.detect(document, { theme: 'p2-resurrected', selectors: {} });
+	assert.equal(result.name, 'p2-resurrected');
+	assert.equal(result.posts.length, 1);
+	assert.equal(result.nextPageUrl, 'https://holdmyvodka.com/page/2/');
+});
+
 test('detects one block Query loop', () => {
 	const document = documentFor(`
 		<div class="wp-block-query"><ul class="wp-block-post-template">
@@ -69,4 +85,3 @@ test('manual selectors must resolve to exactly one safe structure', () => {
 	assert.equal(result.posts.length, 1);
 	assert.equal(adapters.manual(document, { feed: '[', post: '.card', pagination: '#pager', next: '.older' }), null);
 });
-

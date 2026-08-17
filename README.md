@@ -1,6 +1,6 @@
 # WP Progressive Infinite Scroll
 
-A standalone, theme-aware WordPress plugin built for holdmyvodka.com. It preserves ordinary WordPress pagination and adds infinite scrolling only as a progressive enhancement.
+A standalone, theme-aware WordPress plugin built for holdmyvodka.com. It preserves ordinary WordPress pagination and adds infinite scrolling only as a progressive enhancement. Version 1.0.1 includes the site's P2 Resurrected theme as a first-class adapter.
 
 ## Architecture
 
@@ -28,6 +28,10 @@ The adapter was based on inspection of the official P2 source:
 * older/next link: `.nav-older a`
 
 P2's `p2.js` binds actions to posts and comments during its initial setup and polls separately for newly published posts. After older posts are appended, the plugin calls the existing public `p2.utility.bindActions()` function for each new post and its comments, and updates P2's public `postsOnPage` array when available. It does not rerun `p2.initialize()`, which would duplicate handlers, and it does not interfere with P2's newest-post polling.
+
+### P2 Resurrected
+
+The active `p2-resurrected` template or stylesheet slug selects a dedicated adapter automatically. It uses the same `#postlist` stream and direct `li.post` items as P2, but follows the theme's numbered pagination through `#main .navigation a.next.page-numbers`. It receives the same controlled per-post and per-comment P2 reinitialization as the original theme.
 
 ### Block themes
 

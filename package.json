@@ -1,6 +1,6 @@
 {
   "name": "wp-progressive-infinite-scroll",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "scripts": {
     "test": "node --test tests/adapters.test.js && node --check assets/js/infinite-scroll.js"
@@ -9,4 +9,3 @@
     "jsdom": "^26.1.0"
   }
 }
-

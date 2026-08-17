@@ -120,7 +120,7 @@
 
 		function findFetchedAdapter(parsed) {
 			var fetchedConfig = {
-				theme: adapter.name === 'p2' ? 'p2' : config.theme,
+				theme: adapter.name === 'p2' || adapter.name === 'p2-resurrected' ? adapter.name : config.theme,
 				selectors: adapter.name === 'manual' ? config.selectors : {}
 			};
 			var found = adapters.detect(parsed, fetchedConfig);
@@ -128,7 +128,7 @@
 		}
 
 		function reinitializeP2(posts) {
-			if (adapter.name !== 'p2' || !window.p2 || !window.p2.utility || typeof window.p2.utility.bindActions !== 'function') return;
+			if ((adapter.name !== 'p2' && adapter.name !== 'p2-resurrected') || !window.p2 || !window.p2.utility || typeof window.p2.utility.bindActions !== 'function') return;
 			posts.forEach(function (post) {
 				window.p2.utility.bindActions(post, 'post');
 				post.querySelectorAll('li.comment').forEach(function (comment) {
