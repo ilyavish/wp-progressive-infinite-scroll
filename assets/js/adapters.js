@@ -58,6 +58,16 @@
 		return result('p2-resurrected', one(document, '#postlist'), ':scope > li.post', one(document, '#main .navigation'), 'a.next.page-numbers');
 	}
 
+	function kadence(document) {
+		return result(
+			'kadence',
+			one(document, '#archive-container.kadence-posts-list'),
+			':scope > li.entry-list-item',
+			one(document, '#main > .navigation.pagination'),
+			'a.next.page-numbers'
+		);
+	}
+
 	function block(document) {
 		var containers = document.querySelectorAll('.wp-block-query .wp-block-post-template');
 		if (containers.length !== 1) return null;
@@ -120,6 +130,9 @@
 		if (config.theme === 'p2-resurrected') {
 			return p2Resurrected(document);
 		}
+		if (config.theme === 'kadence') {
+			return kadence(document);
+		}
 		return block(document) || generic(document);
 	}
 
@@ -128,6 +141,7 @@
 		manual: manual,
 		p2: p2,
 		p2Resurrected: p2Resurrected,
+		kadence: kadence,
 		block: block,
 		generic: generic,
 		scopedPosts: scopedPosts

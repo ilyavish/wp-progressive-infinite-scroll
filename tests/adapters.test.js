@@ -37,6 +37,26 @@ test('detects the P2 Resurrected structure and numbered next-page URL', () => {
 	assert.equal(result.nextPageUrl, 'https://holdmyvodka.com/page/2/');
 });
 
+test('detects Kadence and appends complete archive list items', () => {
+	const document = documentFor(`
+		<div id="main" class="site-main">
+			<ul id="archive-container" class="content-wrap kadence-posts-list grid-cols post-archive">
+				<li class="entry-list-item"><article class="entry loop-entry post-25912 post"><h2><a rel="bookmark" href="/place/">Place</a></h2></article></li>
+			</ul>
+			<nav class="navigation pagination"><div class="nav-links">
+				<span class="page-numbers current">1</span>
+				<a class="next page-numbers" href="/page/2/"><span>Next Page</span></a>
+			</div></nav>
+		</div>
+	`, 'https://unusualplaces.org/');
+	const result = adapters.detect(document, { theme: 'kadence', selectors: {} });
+	assert.equal(result.name, 'kadence');
+	assert.equal(result.feedContainer.id, 'archive-container');
+	assert.equal(result.posts.length, 1);
+	assert.equal(result.posts[0].tagName, 'LI');
+	assert.equal(result.nextPageUrl, 'https://unusualplaces.org/page/2/');
+});
+
 test('detects one block Query loop', () => {
 	const document = documentFor(`
 		<div class="wp-block-query"><ul class="wp-block-post-template">
