@@ -59,7 +59,8 @@
 		var loading = false;
 		var failed = false;
 		var finished = false;
-		var autoArmed = true;
+		var sentinelIntersecting = false;
+		var automaticBudget = 3;
 		var controller = null;
 		var requestHandler = function (url, options) { return window.fetch(url, options); };
 
@@ -222,24 +223,30 @@
 			} finally {
 				window.clearTimeout(timer);
 				controller = null;
-				if (source === 'manual') autoArmed = false;
+				// Intersection callbacks can arrive while loading, or not fire at all
+				// when an appended batch stays hidden. Recheck after completion.
+				window.setTimeout(maybeLoadAutomatically, 0);
 			}
 		}
 
 		loadMore.addEventListener('click', function (event) {
 			if (failed) return;
 			event.preventDefault();
+			automaticBudget = 3;
 			loadNext('manual');
 		});
 
+		function maybeLoadAutomatically() {
+			if (!sentinelIntersecting || loading || failed || finished || automaticBudget <= 0) return;
+			automaticBudget -= 1;
+			loadNext('automatic');
+		}
+
 		var autoObserver = new IntersectionObserver(function (entries) {
 			entries.forEach(function (entry) {
-				if (!entry.isIntersecting) {
-					autoArmed = true;
-				} else if (autoArmed && !loading && !failed && !finished) {
-					autoArmed = false;
-					loadNext('automatic');
-				}
+				sentinelIntersecting = entry.isIntersecting;
+				if (!sentinelIntersecting) automaticBudget = 3;
+				else maybeLoadAutomatically();
 			});
 		}, { rootMargin: config.rootMargin || '800px 0px' });
 

@@ -3,7 +3,7 @@
  * Plugin Name:       WP Progressive Infinite Scroll
  * Plugin URI:        https://github.com/ilyavish/wp-progressive-infinite-scroll
  * Description:       Adds theme-aware infinite scrolling while preserving normal WordPress pagination as the foundation and fallback.
- * Version:           1.0.3
+ * Version:           1.0.4
  * Requires at least: 6.0
  * Requires PHP:      7.4
  * Author:            holdmyvodka.com
@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-const VERSION = '1.0.3';
+const VERSION = '1.0.4';
 const OPTION  = 'wp_pfis_selectors';
 
 require_once __DIR__ . '/includes/class-settings.php';

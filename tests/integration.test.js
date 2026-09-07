@@ -24,8 +24,8 @@ test('programmatic unseen loading leaves automatic scrolling armed',async()=>{
  await w.WPPFIS.loadNext();
  observers[0].cb([{isIntersecting:true}]);
  await new Promise(r=>setTimeout(r,10));
- assert.deepEqual(requests,['https://example.com/page/2/','https://example.com/page/3/']);
- assert.equal(w.document.querySelectorAll('#postlist > .post').length,3);
+ assert.deepEqual(requests,['https://example.com/page/2/','https://example.com/page/3/','https://example.com/page/4/','https://example.com/page/5/']);
+ assert.equal(w.document.querySelectorAll('#postlist > .post').length,5);
  w.close();
 });
 test('scoped response provider advances from the actual fetched page',async()=>{
@@ -55,4 +55,27 @@ test('both plugins skip seen pages through the scoped provider', {skip: !process
  assert.ok(w.document.querySelector('#prologue-3'));
  assert.equal(w.document.querySelector('.wp-pfis-load-more').href,'https://example.com/page/4/');
  w.close();
+});
+
+ test('continues after an intersection occurs during an outstanding request',async()=>{
+ const {w,observers,requests}=await boot();let release;
+ w.WPPFIS.setRequestHandler(url=>{requests.push(url);return new Promise(resolve=>{release=()=>resolve({ok:true,text:async()=>page(2,3)});});});
+ const loading=w.WPPFIS.loadNext();observers[0].cb([{isIntersecting:true}]);
+ w.WPPFIS.setRequestHandler(async url=>{requests.push(url);return {ok:true,text:async()=>page(3,null)};});
+ release();await loading;await new Promise(r=>setTimeout(r,20));
+ assert.deepEqual(requests,['https://example.com/page/2/','https://example.com/page/3/']);
+ assert.equal(w.document.querySelector('.wp-pfis-load-more'),null);w.close();
+});
+ test('short-page auto filling is bounded and a manual click resumes it',async()=>{
+ const {w,observers,requests}=await boot();
+ observers[0].cb([{isIntersecting:true}]);await new Promise(r=>setTimeout(r,40));
+ assert.equal(requests.length,3);
+ await new Promise(r=>setTimeout(r,20));assert.equal(requests.length,3);
+ w.document.querySelector('.wp-pfis-load-more').click();
+ await new Promise(r=>setTimeout(r,40));assert.equal(requests.length,7);w.close();
+});
+ test('moving away from the marker stops automatic continuation',async()=>{
+ const {w,observers,requests}=await boot();
+ observers[0].cb([{isIntersecting:true}]);observers[0].cb([{isIntersecting:false}]);
+ await new Promise(r=>setTimeout(r,20));assert.equal(requests.length,1);w.close();
 });

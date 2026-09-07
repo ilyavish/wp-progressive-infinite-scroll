@@ -1,6 +1,6 @@
 # WP Progressive Infinite Scroll
 
-A standalone, theme-aware WordPress plugin built for holdmyvodka.com and unusualplaces.org. It preserves ordinary WordPress pagination and adds infinite scrolling only as a progressive enhancement. Version 1.0.3 combines P2 Resurrected and Kadence adapters with the Seen Posts loader integration. The same release ZIP supports both sites, including Kadence child themes.
+A standalone, theme-aware WordPress plugin built for holdmyvodka.com and unusualplaces.org. It preserves ordinary WordPress pagination and adds infinite scrolling only as a progressive enhancement. Version 1.0.4 combines P2 Resurrected and Kadence adapters with the Seen Posts loader integration. The same release ZIP supports both sites, including Kadence child themes.
 
 ## Architecture
 
@@ -51,7 +51,7 @@ Settings > Infinite Scroll accepts feed, post, pagination, and next-link selecto
 
 ## Runtime behavior
 
-The initial page remains completely server-rendered. An `IntersectionObserver` with an `800px 0px` root margin watches a one-pixel sentinel. Automatic loading is re-armed only after the sentinel leaves the intersection area, preventing a short page from recursively pulling the entire archive. The same `loadNext()` function powers the real-href Load More control.
+The initial page remains completely server-rendered. An `IntersectionObserver` with an `800px 0px` root margin watches a one-pixel sentinel. After each request, the engine rechecks whether the sentinel remains near the viewport. It allows up to three consecutive automatic requests per intersection cycle; leaving the area or clicking Load More resets that budget. This handles short or hidden batches and triggers received during loading without downloading the entire archive. The same `loadNext()` function powers the real-href Load More control.
 
 Only same-origin HTTP(S) URLs obtained from pagination are accepted. A `Set` prevents repeated URLs, one request may run at a time, and an `AbortController` stops a request after 20 seconds. No future pages or images are preloaded.
 
