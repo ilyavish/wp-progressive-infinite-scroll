@@ -4,7 +4,7 @@ Tags: infinite scroll, pagination, progressive enhancement, p2, accessibility
 Requires at least: 6.0
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 1.0.2
+Stable tag: 1.0.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -18,6 +18,7 @@ Built-in adapters cover:
 
 * P2 (`#postlist`, direct `li.post`, `.navigation`, `.nav-older a`)
 * P2 Resurrected (`#postlist`, direct `li.post`, numbered pagination, `a.next.page-numbers`)
+* Kadence and Kadence child themes (`#archive-container`, complete card list items, numbered pagination)
 * Block Query loops
 * Unambiguous common classic-theme markup
 * Complete manual selector overrides under Settings > Infinite Scroll
@@ -51,8 +52,12 @@ Ambiguous detection fails safely. Configure precise selectors in Settings > Infi
 
 == Changelog ==
 
-= 1.0.2 =
+= 1.0.3 =
 * Expose a feed-scoped loading API and response provider. Programmatic unseen searches no longer disable automatic loading as manual clicks do.
+
+* Add automatic Kadence and Kadence child-theme detection.
+* Preserve Kadence's complete `li.entry-list-item` card wrapper when appending its archive grid.
+
 
 = 1.0.1 =
 

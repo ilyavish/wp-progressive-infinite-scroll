@@ -1,10 +1,10 @@
 # WP Progressive Infinite Scroll
 
-A standalone, theme-aware WordPress plugin built for holdmyvodka.com. It preserves ordinary WordPress pagination and adds infinite scrolling only as a progressive enhancement. Version 1.0.1 includes the site's P2 Resurrected theme as a first-class adapter.
+A standalone, theme-aware WordPress plugin built for holdmyvodka.com and unusualplaces.org. It preserves ordinary WordPress pagination and adds infinite scrolling only as a progressive enhancement. Version 1.0.3 combines P2 Resurrected and Kadence adapters with the Seen Posts loader integration. The same release ZIP supports both sites, including Kadence child themes.
 
 ## Architecture
 
-The PHP layer only decides whether the current request is a feed/archive/search, identifies P2, loads the two small native-JavaScript files and CSS, and exposes optional selector settings. It does not change `WP_Query`, rewrite URLs, add REST routes, start sessions, or vary server output by visitor.
+The PHP layer only decides whether the current request is a feed/archive/search, identifies P2, P2 Resurrected, and Kadence, loads the two small native-JavaScript files and CSS, and exposes optional selector settings. It does not change `WP_Query`, rewrite URLs, add REST routes, start sessions, or vary server output by visitor.
 
 `assets/js/adapters.js` normalizes supported theme markup into:
 
@@ -32,6 +32,10 @@ P2's `p2.js` binds actions to posts and comments during its initial setup and po
 ### P2 Resurrected
 
 The active `p2-resurrected` template or stylesheet slug selects a dedicated adapter automatically. It uses the same `#postlist` stream and direct `li.post` items as P2, but follows the theme's numbered pagination through `#main .navigation a.next.page-numbers`. It receives the same controlled per-post and per-comment P2 reinitialization as the original theme.
+
+### Kadence
+
+An active `kadence` parent template or stylesheet selects the Kadence adapter automatically, including sites using a Kadence child theme. The adapter uses `#archive-container.kadence-posts-list` as the feed, appends complete direct `li.entry-list-item` cards, and follows `#main > .navigation.pagination a.next.page-numbers`. Keeping the list-item wrapper preserves Kadence's grid semantics and card layout. Kadence archive cards require no theme-wide JavaScript reinitialization; other plugins can initialize their own behavior through `wpFeedPostsAdded`.
 
 ### Block themes
 
@@ -116,3 +120,7 @@ npm install
 npm test
 find . -name '*.php' -exec php -l {} \;
 ```
+
+### Companion loader API
+
+`window.WPPFIS` exposes the detected `container`, `loadNext()` for programmatic unseen searches, and `setRequestHandler(handler)` for a feed-scoped prefetched response provider. Programmatic searches do not count as manual button clicks. Without a provider, normal fetch is used.
