@@ -61,6 +61,7 @@
 		var finished = false;
 		var autoArmed = true;
 		var controller = null;
+		var requestHandler = function (url, options) { return window.fetch(url, options); };
 
 		function refreshIdentities() {
 			adapters.scopedPosts(feed, adapter.postSelector).forEach(function (post) {
@@ -191,7 +192,7 @@
 			var timer = window.setTimeout(function () { controller.abort(); }, Number(config.timeout) || 20000);
 
 			try {
-				var response = await fetch(loadedUrl, {
+				var response = await requestHandler(loadedUrl, {
 					credentials: 'same-origin',
 					headers: { Accept: 'text/html' },
 					signal: controller.signal
@@ -256,6 +257,14 @@
 		}, { rootMargin: '-15% 0px -70% 0px', threshold: 0 });
 		adapter.posts.forEach(function (post, index) { if (index === 0) historyObserver.observe(post); });
 
+		// Feed-scoped integration: programmatic searches are not manual button taps.
+		window.WPPFIS = {
+			container: feed,
+			loadNext: function () { return loadNext('unseen'); },
+			setRequestHandler: function (handler) {
+				if (typeof handler === 'function') requestHandler = handler;
+			}
+		};
 		autoObserver.observe(sentinel);
 		document.documentElement.classList.add('wp-pfis-active');
 		document.dispatchEvent(new CustomEvent('wpFeedInfiniteScrollReady', { detail: { adapter: adapter.name, container: feed } }));

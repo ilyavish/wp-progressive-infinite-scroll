@@ -4,7 +4,7 @@ Tags: infinite scroll, pagination, progressive enhancement, p2, accessibility
 Requires at least: 6.0
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 1.0.1
+Stable tag: 1.0.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -50,6 +50,9 @@ Listen for `wpFeedPostsAdded` on `document`. Event detail contains `container`, 
 Ambiguous detection fails safely. Configure precise selectors in Settings > Infinite Scroll; the normal pagination continues working meanwhile.
 
 == Changelog ==
+
+= 1.0.2 =
+* Expose a feed-scoped loading API and response provider. Programmatic unseen searches no longer disable automatic loading as manual clicks do.
 
 = 1.0.1 =
 
